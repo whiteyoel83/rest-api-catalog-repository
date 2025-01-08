@@ -1,0 +1,16 @@
+[
+  {
+    "id": "1",
+    "name": "Brand 1",
+    "slug": "brand-1",
+    "description": "Brand 1 description",
+    "position": 1
+  },
+  {
+    "id": "2",
+    "name": "Brand 2",
+    "slug": "brand-2",
+    "description": "Brand 2 description",
+    "position": 2
+  }
+]
