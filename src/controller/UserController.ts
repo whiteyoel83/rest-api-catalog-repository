@@ -22,11 +22,21 @@ export class UserController {
 
   async update(id: string, user: IUser): Promise<IUser | null> {
     // Implementation to update a user in the database
-    return null;
+    return user;
   }
 
   async delete(id: string): Promise<boolean> {
     // Implementation to delete a user from the database
     return true;
+  }
+
+  async findByEmail(email: string): Promise<IUser | null> {
+    // Implementation to fetch user by email from the database
+    return null;
+  }
+
+  async findByUsername(username: string): Promise<IUser | null> {
+    // Implementation to fetch user by username from the database
+    return null;
   }
 }
