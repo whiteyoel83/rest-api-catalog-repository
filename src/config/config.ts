@@ -1,5 +1,6 @@
 import { DriversDB } from "../enums/drivers";
 const {
+  host: HOST = "localhost",
   port: PORT = 3000,
   apiVersion: API_VERSION = "v1",
   apiKey: API_KEY = "some-key",
@@ -16,6 +17,7 @@ const {
 } = process.env;
 
 export const Config = {
+  HOST,
   PORT,
   API_VERSION,
   API_KEY,

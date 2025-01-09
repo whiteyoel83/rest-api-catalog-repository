@@ -7,7 +7,7 @@ import { DriversDB } from "../enums/drivers";
 import { Config } from "../config/config";
 
 export class UserDal {
-  static async loginUsername({ username, password }: any) {
+  async loginUsername({ username, password }: any) {
     let userDal: any;
     switch (Config.DBDRIVER) {
       case DriversDB.MONGODB:
@@ -29,7 +29,7 @@ export class UserDal {
     return await userDal.loginUsername({ username, password });
   }
 
-  static async loginEmail({ email, password }: any) {
+  async loginEmail({ email, password }: any) {
     let userDal: any;
     switch (Config.DBDRIVER) {
       case DriversDB.MONGODB:
@@ -51,7 +51,7 @@ export class UserDal {
     return await userDal.loginEmail({ email, password });
   }
 
-  static async logout({ token }: any) {
+  async logout({ token }: any) {
     let userDal: any;
     switch (Config.DBDRIVER) {
       case DriversDB.MONGODB:
@@ -73,7 +73,7 @@ export class UserDal {
     return await userDal.logout({ token });
   }
 
-  static async getUserById(id: string) {
+  async getUserById(id: string) {
     let userDal: any;
     switch (Config.DBDRIVER) {
       case DriversDB.MONGODB:
@@ -95,7 +95,7 @@ export class UserDal {
     return await userDal.getUserById(id);
   }
 
-  static async getUserByEmail(email: string) {
+  async getUserByEmail(email: string) {
     let userDal: any;
     switch (Config.DBDRIVER) {
       case DriversDB.MONGODB:
@@ -117,7 +117,7 @@ export class UserDal {
     return await userDal.getUserByEmail(email);
   }
 
-  static async getUserByUsername(username: string) {
+  async getUserByUsername(username: string) {
     let userDal: any;
     switch (Config.DBDRIVER) {
       case DriversDB.MONGODB:
@@ -139,7 +139,7 @@ export class UserDal {
     return await userDal.getUserByUsername(username);
   }
 
-  static async register(user: any) {
+  async register(user: any) {
     let userDal: any;
     switch (Config.DBDRIVER) {
       case DriversDB.MONGODB:
@@ -159,5 +159,49 @@ export class UserDal {
         break;
     }
     return await userDal.register(user);
+  }
+  async getAll() {
+    console.log("findAll from Dal");
+    let userDal: any;
+    switch (Config.DBDRIVER) {
+      case DriversDB.MONGODB:
+        userDal = UserDalMongoDB;
+        break;
+      case DriversDB.SQLITE:
+        userDal = UserDalSQLite;
+        break;
+      case DriversDB.MYSQL:
+        userDal = UserDalMysql;
+        break;
+      case DriversDB.POSTGRES:
+        userDal = UserDalPostgres;
+        break;
+      default:
+        userDal = UserDalMock;
+        break;
+    }
+    return await userDal.getAll();
+  }
+
+  async getAllWithPaginate(page: number, limit: number) {
+    let userDal: any;
+    switch (Config.DBDRIVER) {
+      case DriversDB.MONGODB:
+        userDal = UserDalMongoDB;
+        break;
+      case DriversDB.SQLITE:
+        userDal = UserDalSQLite;
+        break;
+      case DriversDB.MYSQL:
+        userDal = UserDalMysql;
+        break;
+      case DriversDB.POSTGRES:
+        userDal = UserDalPostgres;
+        break;
+      default:
+        userDal = UserDalMock;
+        break;
+    }
+    return await userDal.getAllWithPaginate(page, limit);
   }
 }

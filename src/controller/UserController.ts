@@ -1,42 +1,28 @@
-import { IUser } from "../interfaces/IUser";
+import { CATALOG } from "../const/catalog";
+import { UserRepository } from "../repository/UserRepository";
+import { serviceResponse } from "../utils/serviceResponse";
 
 export class UserController {
-  constructor() {
-    // Implementation to interact with the user repository
+  repository: UserRepository;
+
+  constructor(repository: UserRepository) {
+    this.repository = repository;
   }
 
-  async findById(id: string): Promise<IUser | null> {
-    // Implementation to fetch user by ID from the database
-    return null;
-  }
-
-  async findAll(): Promise<IUser[]> {
-    // Implementation to fetch all users from the database
-    return [];
-  }
-
-  async create(user: IUser): Promise<IUser> {
-    // Implementation to create a new user in the database
-    return user;
-  }
-
-  async update(id: string, user: IUser): Promise<IUser | null> {
-    // Implementation to update a user in the database
-    return user;
-  }
-
-  async delete(id: string): Promise<boolean> {
-    // Implementation to delete a user from the database
-    return true;
-  }
-
-  async findByEmail(email: string): Promise<IUser | null> {
-    // Implementation to fetch user by email from the database
-    return null;
-  }
-
-  async findByUsername(username: string): Promise<IUser | null> {
-    // Implementation to fetch user by username from the database
-    return null;
+  async findAll(req: any, res: any) {
+    try {
+      const users = await this.repository.findAll();
+      return serviceResponse.ok(
+        res,
+        CATALOG.USERS.MESSAGES.GET_ALL_SUCCESS,
+        users
+      );
+    } catch (error) {
+      return serviceResponse.internalServerError(
+        res,
+        CATALOG.GENERAL.MESSAGES.INTERNAL_SERVER_ERROR,
+        null
+      );
+    }
   }
 }

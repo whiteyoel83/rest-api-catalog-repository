@@ -1,31 +1,27 @@
 import { CATALOG } from "../../const/catalog";
 import { returnResponse } from "../../utils/response";
 
-const brands: any[] = require("./brands.json");
+const users: any[] = require("./users.json");
+console.log("users loaded", users);
 
 export class UserDalMock {
   static getAll() {
-    return returnResponse(
-      brands,
-      true,
-      200,
-      CATALOG.BRANDS.MESSAGES.GET_ALL_SUCCESS
-    );
+    try {
+      console.log("findAll from Mock");
+      return users;
+    } catch (error) {
+      return error;
+    }
   }
 
   static getAllWithPaginate(page: number, limit: number) {
     const startIndex = (page - 1) * limit;
     const endIndex = startIndex + limit;
-    return returnResponse(
-      brands.slice(startIndex, endIndex),
-      true,
-      200,
-      CATALOG.BRANDS.MESSAGES.GET_ALL_WITH_PAGINATION_SUCCESS
-    );
+    return users.slice(startIndex, endIndex);
   }
 
   static getById(id: string) {
-    const brandIndex = brands.findIndex((brand: any) => brand.id === id);
+    const brandIndex = users.findIndex((brand: any) => brand.id === id);
 
     if (brandIndex === -1) {
       console.error("invalid index:" + brandIndex);
@@ -38,7 +34,7 @@ export class UserDalMock {
     }
 
     return returnResponse(
-      brands[brandIndex],
+      users[brandIndex],
       true,
       200,
       CATALOG.BRANDS.MESSAGES.GET_BY_ID_SUCCESS + id
@@ -51,7 +47,7 @@ export class UserDalMock {
       ...brand,
     };
 
-    brands.push(newBrand);
+    users.push(newBrand);
     return returnResponse(
       newBrand,
       true,
@@ -61,7 +57,7 @@ export class UserDalMock {
   }
 
   static async update(id: string, brand: any) {
-    const brandIndex = brands.findIndex((brand: any) => brand.id === id);
+    const brandIndex = users.findIndex((brand: any) => brand.id === id);
 
     if (brandIndex === -1) {
       console.error("invalid index" + brandIndex);
@@ -74,11 +70,11 @@ export class UserDalMock {
     }
 
     const updatedBrand = {
-      ...brands[brandIndex],
+      ...users[brandIndex],
       ...brand,
     };
 
-    brands[brandIndex] = updatedBrand;
+    users[brandIndex] = updatedBrand;
     return returnResponse(
       updatedBrand,
       true,
@@ -88,7 +84,7 @@ export class UserDalMock {
   }
 
   static async delete(id: string) {
-    const brandIndex = brands.findIndex((brand: any) => brand.id === id);
+    const brandIndex = users.findIndex((brand: any) => brand.id === id);
 
     if (brandIndex === -1) {
       console.error("invalid index" + brandIndex);
@@ -100,9 +96,9 @@ export class UserDalMock {
       );
     }
 
-    const deletedBrand = brands[brandIndex];
+    const deletedBrand = users[brandIndex];
 
-    brands.splice(brandIndex, 1);
+    users.splice(brandIndex, 1);
     return returnResponse(
       deletedBrand,
       true,
