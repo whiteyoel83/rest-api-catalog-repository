@@ -1,8 +1,36 @@
 import app from "./app";
+import connectDBMongo from "./config/mongodb";
+import connectDBMysql from "./config/mysqldb";
+import connectDBSqlite from "./config/sqlitedb";
+import connectDBPostgres from "./config/postgresqldb";
+import { DriversDB } from "./enums/drivers";
+import { Config } from "./config/config";
+import mongoose from "mongoose";
 
-const port = process.env.PORT || 3000;
+const port = Config.PORT;
+
+switch (Config.DBDRIVER) {
+  case DriversDB.MONGODB:
+    connectDBMongo();
+    mongoose.connection.once("open", () => {
+      console.log("Connected to MongoDB");
+    });
+    break;
+  case DriversDB.MYSQL:
+    connectDBMysql();
+    break;
+  case DriversDB.SQLITE:
+    connectDBSqlite();
+    break;
+  case DriversDB.POSTGRES:
+    connectDBPostgres();
+    break;
+  default:
+    console.log("Connected to Mock data");
+
+    break;
+}
+
 app.listen(port, () => {
-  /* eslint-disable no-console */
   console.log(`Listening: http://localhost:${port}`);
-  /* eslint-enable no-console */
 });
