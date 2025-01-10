@@ -24,7 +24,7 @@ export class UserController {
     }
   };
 
-  async getAllWithPaginate(req: any, res: any): Promise<any> {
+  getAllWithPaginate = async (req: any, res: any): Promise<any> => {
     try {
       let users: any[] = [];
       users = await this.userRepository.getAllWithPaginate(
@@ -43,9 +43,9 @@ export class UserController {
         null
       );
     }
-  }
+  };
 
-  async getAllWithFilters(req: any, res: any): Promise<any> {
+  getAllWithFilters = async (req: any, res: any): Promise<any> => {
     try {
       let users: any[] = [];
       console.log("req.query.filters", req.query.filters);
@@ -62,9 +62,9 @@ export class UserController {
         null
       );
     }
-  }
+  };
 
-  async create(req: any, res: any): Promise<any> {
+  create = async (req: any, res: any): Promise<any> => {
     try {
       const user: IUser = {
         id: crypto.randomUUID(),
@@ -86,9 +86,9 @@ export class UserController {
         null
       );
     }
-  }
+  };
 
-  async update(req: any, res: any) {
+  update = async (req: any, res: any): Promise<any> => {
     try {
       const id = req.params.id;
       const user: IUser = {
@@ -111,9 +111,9 @@ export class UserController {
         null
       );
     }
-  }
+  };
 
-  async delete(req: any, res: any) {
+  delete = async (req: any, res: any): Promise<any> => {
     try {
       const id = req.params.id;
       const newUser = await this.userRepository.delete(id);
@@ -129,9 +129,9 @@ export class UserController {
         null
       );
     }
-  }
+  };
 
-  async getById(req: any, res: any) {
+  getById = async (req: any, res: any): Promise<any> => {
     try {
       const id = req.params.id;
       const newUser = await this.userRepository.getById(id);
@@ -147,9 +147,9 @@ export class UserController {
         null
       );
     }
-  }
+  };
 
-  async getByEmail(req: any, res: any) {
+  getByEmail = async (req: any, res: any): Promise<any> => {
     try {
       const email = req.params.email;
       const newUser = await this.userRepository.getByEmail(email);
@@ -165,9 +165,9 @@ export class UserController {
         null
       );
     }
-  }
+  };
 
-  async getByUsername(req: any, res: any) {
+  getByUsername = async (req: any, res: any): Promise<any> => {
     try {
       const username = req.params.username;
       const newUser = await this.userRepository.getByUsername(username);
@@ -183,9 +183,9 @@ export class UserController {
         null
       );
     }
-  }
+  };
 
-  async getByPhone(req: any, res: any) {
+  getByPhone = async (req: any, res: any): Promise<any> => {
     try {
       const phone = req.params.phone;
       const newUser = await this.userRepository.getByPhone(phone);
@@ -201,5 +201,25 @@ export class UserController {
         null
       );
     }
+  };
+
+  async loginEmail(req: any, res: any): Promise<any> {
+    return null;
+  }
+
+  async loginUsername(req: any, res: any): Promise<any> {
+    return null;
+  }
+
+  async loginPhone(req: any, res: any): Promise<any> {
+    return null;
+  }
+
+  async loginToken(req: any, res: any): Promise<any> {
+    return null;
+  }
+
+  async logout(req: any, res: any): Promise<any> {
+    return null;
   }
 }

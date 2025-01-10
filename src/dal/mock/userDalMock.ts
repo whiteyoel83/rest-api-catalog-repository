@@ -49,13 +49,13 @@ export class UserDalMock {
 
   static create(element: any) {
     try {
-      const newElement: any = {
-        id: crypto.randomUUID(),
-        ...element,
-      };
+      // const newElement: any = {
+      //   id: crypto.randomUUID(),
+      //   ...element,
+      // };
 
-      list.push(newElement);
-      return newElement;
+      list.push(element);
+      return element;
     } catch (error) {
       console.error(error);
       return error;

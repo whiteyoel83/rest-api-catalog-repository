@@ -5,18 +5,28 @@ const userRoutes = express.Router();
 const userController = new UserController();
 
 userRoutes.get("/", userController.getAll);
+userRoutes.get("/with", userController.getAllWithPaginate);
+userRoutes.post("/", userController.create);
+userRoutes.get("/id/:id", userController.getById);
+userRoutes.get("/email/:email", userController.getByEmail);
+userRoutes.get("/username/:username", userController.getByUsername);
+userRoutes.get("/phone/:phone", userController.getByPhone);
+userRoutes.put("/id/:id", userController.update);
+userRoutes.delete("/id/:id", userController.delete);
 //Bind the method when passing It
-userRoutes.get("/with", userController.getAllWithPaginate.bind(userController));
-userRoutes.post("/", userController.create.bind(userController));
-userRoutes.get("/id/:id", userController.getById.bind(userController));
-userRoutes.get("/email/:email", userController.getByEmail.bind(userController));
-userRoutes.get(
-  "/username/:username",
-  userController.getByUsername.bind(userController)
+userRoutes.delete(
+  "/loginbyemail",
+  userController.loginEmail.bind(userController)
 );
-userRoutes.get("/phone/:phone", userController.getByPhone.bind(userController));
-userRoutes.put("/id/:id", userController.update.bind(userController));
-userRoutes.delete("/id/:id", userController.delete.bind(userController));
+userRoutes.delete(
+  "/loginbyusername",
+  userController.loginUsername.bind(userController)
+);
+userRoutes.delete(
+  "/loginbyphone",
+  userController.loginPhone.bind(userController)
+);
+userRoutes.delete("/logout", userController.logout.bind(userController));
 
 userRoutes.get("/:userId/books/:bookId", (req, res) => {
   res.send(req.params);

@@ -6,7 +6,6 @@ import connectDBPostgres from "./config/postgresqldb";
 import { DriversDB } from "./enums/drivers";
 import { Config } from "./config/config";
 import mongoose from "mongoose";
-import { log } from "console";
 
 const port = Config.PORT;
 //pending to implement the database connection(Redis,SQL Server,elasticsearch)

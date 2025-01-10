@@ -17,7 +17,7 @@ export interface IUserRepository {
   logout({ token }: any): Promise<boolean>;
 }
 
-interface IUserRepositoryStatic {
-  new (): IUserRepository; // Constructor signature (optional)
-  getInstance(): IUserRepository; // Example static method
+export interface IUserRepositoryStatic {
+  new (): IUserRepository;
+  getInstance(): IUserRepository;
 }
