@@ -9,7 +9,7 @@ import mongoose from "mongoose";
 import { log } from "console";
 
 const port = Config.PORT;
-
+//pending to implement the database connection(Redis,SQL Server,elasticsearch)
 switch (Config.DBDRIVER) {
   case DriversDB.MONGODB:
     connectDBMongo();
@@ -28,10 +28,16 @@ switch (Config.DBDRIVER) {
     break;
   default:
     console.log("Connected to Mock data");
-    log("Connected to Mock data");
     break;
 }
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Listening: http://localhost:${port}`);
+});
+
+process.on("SIGTERM", () => {
+  console.log("SIGTERM signal received: closing HTTP server");
+  server.close(() => {
+    console.log("HTTP server closed");
+  });
 });

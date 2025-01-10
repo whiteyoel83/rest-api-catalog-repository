@@ -130,7 +130,7 @@ export class UserDal {
           userDal = UserDalMock;
           break;
       }
-      return await userDal.getUserById(id);
+      return await userDal.getById(id);
     } catch (error) {
       return error;
     }
@@ -156,7 +156,7 @@ export class UserDal {
           userDal = UserDalMock;
           break;
       }
-      return await userDal.getUserByEmail(email);
+      return await userDal.getByEmail(email);
     } catch (error) {
       return error;
     }
@@ -208,7 +208,7 @@ export class UserDal {
           userDal = UserDalMock;
           break;
       }
-      return await userDal.getUserByUsername(username);
+      return await userDal.getByUsername(username);
     } catch (error) {
       return error;
     }
@@ -234,7 +234,7 @@ export class UserDal {
           userDal = UserDalMock;
           break;
       }
-      return await userDal.register(user);
+      return await userDal.create(user);
     } catch (error) {
       return error;
     }

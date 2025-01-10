@@ -21,19 +21,39 @@ export class UserRepository implements IUserRepository {
   }
 
   async getById(id: string): Promise<any> {
-    return null;
+    try {
+      const user = await UserDal.getById(id);
+      return user;
+    } catch (error) {
+      return null;
+    }
   }
 
   async getByEmail(email: string): Promise<IUser | null> {
-    return null;
+    try {
+      const user = await UserDal.getByEmail(email);
+      return user;
+    } catch (error) {
+      return null;
+    }
   }
 
   async getByUsername(username: string): Promise<IUser | null> {
-    return null;
+    try {
+      const user = await UserDal.getByUsername(username);
+      return user;
+    } catch (error) {
+      return null;
+    }
   }
 
   async getByPhone(phone: string): Promise<IUser | null> {
-    return null;
+    try {
+      const user = await UserDal.getByPhone(phone);
+      return user;
+    } catch (error) {
+      return null;
+    }
   }
 
   async getAll(): Promise<any[]> {
@@ -66,7 +86,6 @@ export class UserRepository implements IUserRepository {
       return users;
     } catch (error) {
       return [];
-      ``;
     }
   }
 
@@ -80,13 +99,21 @@ export class UserRepository implements IUserRepository {
   }
 
   async update(id: string, user: IUser): Promise<IUser | null> {
-    // Implementation to update a user in the database
-    return null;
+    try {
+      const newUser = await UserDal.updated(id, user);
+      return newUser;
+    } catch (error) {
+      return null;
+    }
   }
 
   async delete(id: string): Promise<boolean> {
-    // Implementation to delete a user from the database
-    return true;
+    try {
+      await UserDal.delete(id);
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
 
   async loginUsername({ username, password }: any): Promise<IUser | null> {

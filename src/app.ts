@@ -16,6 +16,16 @@ app.use(corsMiddleware());
 app.use(express.json());
 app.use(router);
 
+// custom error handler
+app.use((err: any, req: any, res: any, next: any) => {
+  console.error(err.stack);
+  serviceResponse.internalServerError(res, "Something broke!", null);
+});
+
+app.get("/", (req, res) => {
+  serviceResponse.ok(res, "Welcome to the API", null);
+});
+
 //Prevent open redirects from malicious websites
 app.use((req, res) => {
   const urlString = req.query.url?.toString() ?? "";
@@ -31,8 +41,9 @@ app.use((req, res) => {
   res.redirect(urlString);
 });
 
-app.get("/", (req, res) => {
-  serviceResponse.ok(res, "Welcome to the API", null);
+app.all("(.*)", (req, res, next) => {
+  console.log("Accessing the secret section ...");
+  next();
 });
 
 router.use(`/api/${Config.API_VERSION}/auth`, authRoutes);
@@ -40,12 +51,6 @@ router.use(`/api/${Config.API_VERSION}/users`, userRoutes);
 
 app.use((req, res, next) => {
   serviceResponse.notFound(res, "Sorry can't find that!", null);
-});
-
-// custom error handler
-app.use((err: any, req: any, res: any, next: any) => {
-  console.error(err.stack);
-  serviceResponse.internalServerError(res, "Something broke!", null);
 });
 
 export default app;

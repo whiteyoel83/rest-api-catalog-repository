@@ -1,10 +1,11 @@
 export interface IUser {
   id: string;
   email: string;
-  username: string;
   password: string;
-  firstName: string;
-  lastName: string;
-  createdAt: string;
-  updatedAt: string;
+  username: string;
+  phone?: string;
+  token?: string;
+  picture?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

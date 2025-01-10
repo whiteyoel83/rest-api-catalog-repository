@@ -7,8 +7,8 @@ export type TUser = {
   phone?: string;
   token?: string;
   picture?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 export interface IUserModel extends TUser, Document {}
