@@ -1,15 +1,14 @@
 import express from "express";
-import { UserController } from "../controller/UserController";
-import { UserRepository } from "../repository/UserRepository";
-import { UserService } from "../services/UserService";
-import { UserDal } from "../dal/UserDal";
+import { UserController } from "../controllers/UserController";
 
 const userRoutes = express.Router();
-const userService = new UserService();
-const userDal = new UserDal();
-const userRepository = new UserRepository(userService, userDal);
-const userController = new UserController(userRepository);
+const userController = new UserController();
 
-userRoutes.get("/", userController.findAll);
+userRoutes.get("/", userController.getAll);
+//Bind the method when passing It
+userRoutes.get("/with", userController.getAllWithPaginate.bind(userController));
+userRoutes.post("/", userController.create);
+// userRoutes.put("/:id", userController.update);
+// userRoutes.delete("/:id", userController.delete);
 
 export default userRoutes;

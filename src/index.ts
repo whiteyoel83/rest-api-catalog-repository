@@ -6,6 +6,7 @@ import connectDBPostgres from "./config/postgresqldb";
 import { DriversDB } from "./enums/drivers";
 import { Config } from "./config/config";
 import mongoose from "mongoose";
+import { log } from "console";
 
 const port = Config.PORT;
 
@@ -27,7 +28,7 @@ switch (Config.DBDRIVER) {
     break;
   default:
     console.log("Connected to Mock data");
-
+    log("Connected to Mock data");
     break;
 }
 

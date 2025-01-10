@@ -1,12 +1,1 @@
-[
-  {
-    "id": "1",
-    "email": "user1@example.com",
-    "username": "user1",
-    "password": "$2a$10$2b2cU8CPhOTaGrs1HRQuAueS7JTT5ZHsHSzYiFPm1leZck7Mc8T4W",
-    "firstName": "John",
-    "lastName": "Doe",
-    "createdAt": "2021-01-01T00:00:00.000Z",
-    "updatedAt": "2021-01-01T00:00:00.000Z"
-  }
-]
+[]

@@ -282,7 +282,7 @@ export const serviceResponse = {
 
   badRequest(res: any, message: string, data: any) {
     return res.status(this.statusCodes.badRequest).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.badRequest,
@@ -291,7 +291,7 @@ export const serviceResponse = {
 
   unauthorized(res: any, message: string, data: any) {
     return res.status(this.statusCodes.unauthorized).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.unauthorized,
@@ -300,7 +300,7 @@ export const serviceResponse = {
 
   forbidden(res: any, message: string, data: any) {
     return res.status(this.statusCodes.forbidden).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.forbidden,
@@ -318,7 +318,7 @@ export const serviceResponse = {
 
   methodNotAllowed(res: any, message: string, data: any) {
     return res.status(this.statusCodes.methodNotAllowed).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.methodNotAllowed,
@@ -327,7 +327,7 @@ export const serviceResponse = {
 
   notAcceptable(res: any, message: string, data: any) {
     return res.status(this.statusCodes.notAcceptable).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.notAcceptable,
@@ -336,7 +336,7 @@ export const serviceResponse = {
 
   proxyAuthenticationRequired(res: any, message: string, data: any) {
     return res.status(this.statusCodes.proxyAuthenticationRequired).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.proxyAuthenticationRequired,
@@ -345,7 +345,7 @@ export const serviceResponse = {
 
   requestTimeout(res: any, message: string, data: any) {
     return res.status(this.statusCodes.requestTimeout).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.requestTimeout,
@@ -354,7 +354,7 @@ export const serviceResponse = {
 
   conflict(res: any, message: string, data: any) {
     return res.status(this.statusCodes.conflict).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.conflict,
@@ -363,7 +363,7 @@ export const serviceResponse = {
 
   gone(res: any, message: string, data: any) {
     return res.status(this.statusCodes.gone).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.gone,
@@ -372,7 +372,7 @@ export const serviceResponse = {
 
   lengthRequired(res: any, message: string, data: any) {
     return res.status(this.statusCodes.lengthRequired).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.lengthRequired,
@@ -381,7 +381,7 @@ export const serviceResponse = {
 
   preconditionFailed(res: any, message: string, data: any) {
     return res.status(this.statusCodes.preconditionFailed).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.preconditionFailed,
@@ -390,7 +390,7 @@ export const serviceResponse = {
 
   payloadTooLarge(res: any, message: string, data: any) {
     return res.status(this.statusCodes.payloadTooLarge).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.payloadTooLarge,
@@ -399,7 +399,7 @@ export const serviceResponse = {
 
   uriTooLong(res: any, message: string, data: any) {
     return res.status(this.statusCodes.uriTooLong).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.uriTooLong,
@@ -408,7 +408,7 @@ export const serviceResponse = {
 
   unsupportedMediaType(res: any, message: string, data: any) {
     return res.status(this.statusCodes.unsupportedMediaType).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.unsupportedMediaType,
@@ -417,7 +417,7 @@ export const serviceResponse = {
 
   rangeNotSatisfiable(res: any, message: string, data: any) {
     return res.status(this.statusCodes.rangeNotSatisfiable).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.rangeNotSatisfiable,
@@ -426,7 +426,7 @@ export const serviceResponse = {
 
   expectationFailed(res: any, message: string, data: any) {
     return res.status(this.statusCodes.expectationFailed).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.expectationFailed,
@@ -435,7 +435,7 @@ export const serviceResponse = {
 
   misdirectedRequest(res: any, message: string, data: any) {
     return res.status(this.statusCodes.misdirectedRequest).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.misdirectedRequest,
@@ -444,7 +444,7 @@ export const serviceResponse = {
 
   unprocessableEntity(res: any, message: string, data: any) {
     return res.status(this.statusCodes.unprocessableEntity).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.unprocessableEntity,
@@ -453,7 +453,7 @@ export const serviceResponse = {
 
   locked(res: any, message: string, data: any) {
     return res.status(this.statusCodes.locked).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.locked,
@@ -462,7 +462,7 @@ export const serviceResponse = {
 
   failedDependency(res: any, message: string, data: any) {
     return res.status(this.statusCodes.failedDependency).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.failedDependency,
@@ -471,7 +471,7 @@ export const serviceResponse = {
 
   tooEarly(res: any, message: string, data: any) {
     return res.status(this.statusCodes.tooEarly).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.tooEarly,
@@ -480,7 +480,7 @@ export const serviceResponse = {
 
   upgradeRequired(res: any, message: string, data: any) {
     return res.status(this.statusCodes.upgradeRequired).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.upgradeRequired,
@@ -489,7 +489,7 @@ export const serviceResponse = {
 
   preconditionRequired(res: any, message: string, data: any) {
     return res.status(this.statusCodes.preconditionRequired).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.preconditionRequired,
@@ -498,7 +498,7 @@ export const serviceResponse = {
 
   tooManyRequests(res: any, message: string, data: any) {
     return res.status(this.statusCodes.tooManyRequests).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.tooManyRequests,
@@ -507,7 +507,7 @@ export const serviceResponse = {
 
   requestHeaderFieldsTooLarge(res: any, message: string, data: any) {
     return res.status(this.statusCodes.requestHeaderFieldsTooLarge).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.requestHeaderFieldsTooLarge,
@@ -516,7 +516,7 @@ export const serviceResponse = {
 
   unavailableForLegalReasons(res: any, message: string, data: any) {
     return res.status(this.statusCodes.unavailableForLegalReasons).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.unavailableForLegalReasons,
@@ -525,7 +525,7 @@ export const serviceResponse = {
 
   internalServerError(res: any, message: string, data: any) {
     return res.status(this.statusCodes.internalServerError).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.internalServerError,
@@ -534,7 +534,7 @@ export const serviceResponse = {
 
   notImplemented(res: any, message: string, data: any) {
     return res.status(this.statusCodes.notImplemented).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.notImplemented,
@@ -543,7 +543,7 @@ export const serviceResponse = {
 
   badGateway(res: any, message: string, data: any) {
     return res.status(this.statusCodes.badGateway).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.badGateway,
@@ -552,7 +552,7 @@ export const serviceResponse = {
 
   serviceUnavailable(res: any, message: string, data: any) {
     return res.status(this.statusCodes.serviceUnavailable).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.serviceUnavailable,
@@ -561,7 +561,7 @@ export const serviceResponse = {
 
   gatewayTimeout(res: any, message: string, data: any) {
     return res.status(this.statusCodes.gatewayTimeout).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.gatewayTimeout,
@@ -570,7 +570,7 @@ export const serviceResponse = {
 
   httpVersionNotSupported(res: any, message: string, data: any) {
     return res.status(this.statusCodes.httpVersionNotSupported).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.httpVersionNotSupported,
@@ -579,7 +579,7 @@ export const serviceResponse = {
 
   variantAlsoNegotiates(res: any, message: string, data: any) {
     return res.status(this.statusCodes.variantAlsoNegotiates).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.variantAlsoNegotiates,
@@ -588,7 +588,7 @@ export const serviceResponse = {
 
   insufficientStorage(res: any, message: string, data: any) {
     return res.status(this.statusCodes.insufficientStorage).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.insufficientStorage,
@@ -597,7 +597,7 @@ export const serviceResponse = {
 
   loopDetected(res: any, message: string, data: any) {
     return res.status(this.statusCodes.loopDetected).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.loopDetected,
@@ -606,7 +606,7 @@ export const serviceResponse = {
 
   bandwidthLimitExceeded(res: any, message: string, data: any) {
     return res.status(this.statusCodes.bandwidthLimitExceeded).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.bandwidthLimitExceeded,
@@ -615,7 +615,7 @@ export const serviceResponse = {
 
   notExtended(res: any, message: string, data: any) {
     return res.status(this.statusCodes.notExtended).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.notExtended,
@@ -624,7 +624,7 @@ export const serviceResponse = {
 
   networkAuthenticationRequired(res: any, message: string, data: any) {
     return res.status(this.statusCodes.networkAuthenticationRequired).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.networkAuthenticationRequired,
@@ -633,7 +633,7 @@ export const serviceResponse = {
 
   webServerIsDown(res: any, message: string, data: any) {
     return res.status(this.statusCodes.webServerIsDown).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.webServerIsDown,
@@ -642,7 +642,7 @@ export const serviceResponse = {
 
   connectionTimedOut(res: any, message: string, data: any) {
     return res.status(this.statusCodes.connectionTimedOut).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.connectionTimedOut,
@@ -651,7 +651,7 @@ export const serviceResponse = {
 
   proxyDeclinedRequest(res: any, message: string, data: any) {
     return res.status(this.statusCodes.proxyDeclinedRequest).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.proxyDeclinedRequest,
@@ -660,7 +660,7 @@ export const serviceResponse = {
 
   staleProxy(res: any, message: string, data: any) {
     return res.status(this.statusCodes.staleProxy).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.staleProxy,
@@ -669,7 +669,7 @@ export const serviceResponse = {
 
   originIsUnreachable(res: any, message: string, data: any) {
     return res.status(this.statusCodes.originIsUnreachable).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.originIsUnreachable,
@@ -678,7 +678,7 @@ export const serviceResponse = {
 
   siteFrozen(res: any, message: string, data: any) {
     return res.status(this.statusCodes.siteFrozen).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.siteFrozen,
@@ -687,7 +687,7 @@ export const serviceResponse = {
 
   networkReadTimeoutError(res: any, message: string, data: any) {
     return res.status(this.statusCodes.networkReadTimeoutError).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.networkReadTimeoutError,
@@ -696,7 +696,7 @@ export const serviceResponse = {
 
   networkConnectTimeoutError(res: any, message: string, data: any) {
     return res.status(this.statusCodes.networkConnectTimeoutError).json({
-      success: true,
+      success: false,
       message,
       data,
       status: this.statusCodes.networkConnectTimeoutError,

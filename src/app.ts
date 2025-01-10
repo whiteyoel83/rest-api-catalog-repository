@@ -1,7 +1,7 @@
 import express from "express";
 import morgan from "morgan";
 import helmet from "helmet";
-import cors from "cors";
+import { corsMiddleware } from "./middleware/middlewareCors";
 import authRoutes from "./routes/authRoutes";
 import { Config } from "./config/config";
 import userRoutes from "./routes/userRoutes";
@@ -9,25 +9,27 @@ import { serviceResponse } from "./utils/serviceResponse";
 
 const app = express();
 const router = express.Router();
+app.disable("x-powered-by");
 app.use(morgan("dev"));
 app.use(helmet());
-app.use(cors());
+app.use(corsMiddleware());
 app.use(express.json());
-
 app.use(router);
 
-// app.use((req, res) => {
-//   try {
-//     if (new Url(req.query.url).host !== Config.HOST) {
-//       return res
-//         .status(400)
-//         .end(`Unsupported redirect to host: ${req.query.url}`);
-//     }
-//   } catch (e) {
-//     return res.status(400).end(`Invalid url: ${req.query.url}`);
-//   }
-//   res.redirect(req.query.url);
-// });
+//Prevent open redirects from malicious websites
+app.use((req, res) => {
+  const urlString = req.query.url?.toString() ?? "";
+  try {
+    if (new URL(urlString).host !== Config.HOST) {
+      return res
+        .status(400)
+        .end(`Unsupported redirect to host: ${req.query.url}`);
+    }
+  } catch (e) {
+    return res.status(400).end(`Invalid url: ${req.query.url}`);
+  }
+  res.redirect(urlString);
+});
 
 app.get("/", (req, res) => {
   serviceResponse.ok(res, "Welcome to the API", null);
