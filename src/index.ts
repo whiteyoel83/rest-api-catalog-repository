@@ -6,6 +6,7 @@ import connectDBPostgres from "./config/postgresqldb";
 import { DriversDB } from "./enums/drivers";
 import { Config } from "./config/config";
 import mongoose from "mongoose";
+import { logger } from "./utils/logs";
 
 const port = Config.PORT;
 //pending to implement the database connection(Redis,SQL Server,elasticsearch)
@@ -30,8 +31,12 @@ switch (Config.DBDRIVER) {
     break;
 }
 
-const server = app.listen(port, () => {
-  console.log(`Listening: http://localhost:${port}`);
+const server = app.listen(Config.PORT, () => {
+  console.log(`Listening: http://${Config.HOST}:${Config.PORT}/`);
+  logger.log({
+    level: "info",
+    message: `Server running on http://${Config.HOST}:${Config.PORT}/`,
+  });
 });
 
 process.on("SIGTERM", () => {

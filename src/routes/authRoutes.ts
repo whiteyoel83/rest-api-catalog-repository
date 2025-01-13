@@ -20,4 +20,31 @@ authRoutes.post("/register", (req, res) => {
   return res.json({ message: "Register successful" });
 });
 
+// //Bind the method when passing It
+// userRoutes.delete(
+//   "/loginbyemail",
+//   userController.loginEmail.bind(userController)
+// );
+// userRoutes.delete(
+//   "/loginbyusername",
+//   userController.loginUsername.bind(userController)
+// );
+// userRoutes.delete(
+//   "/loginbyphone",
+//   userController.loginPhone.bind(userController)
+// );
+// userRoutes.delete("/logout", userController.logout.bind(userController));
+
+// userRoutes.get("/:userId/books/:bookId", (req, res) => {
+//   res.send(req.params);
+// });
+
+// userRoutes.get("/flights/:from-:to", (req, res) => {
+//   res.send(req.params);
+// });
+
+// userRoutes.get("/filter/:field.:operator.:value", (req, res) => {
+//   res.send(req.params);
+// });
+
 export default authRoutes;
