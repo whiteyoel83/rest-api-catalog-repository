@@ -15,7 +15,7 @@ const {
   mysql: MYSQL = "mysql://user:password@127.0.0.1/catalog",
   postgresql: POSTGRESQL = "postgresql://user:password@127.0.0.1:5432/catalog",
   stripeSecretKey: STRIPE_SECRET_KEY = "sk_test_510i0o4o0o4o0o4o0o4o0o4o",
-  logsPath: LOGS_PATH = "./src/logs/",
+  logsPath: LOGS_PATH = "../logs/",
   serviceName: SERVICE_NAME = "catalog-api",
 } = process.env;
 

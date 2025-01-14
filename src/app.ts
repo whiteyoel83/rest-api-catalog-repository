@@ -9,16 +9,15 @@ import authRoutes from "./routes/authRoutes";
 import { Config } from "./config/config";
 import userRoutes from "./routes/userRoutes";
 import { serviceResponse } from "./utils/serviceResponse";
-import multer from "multer";
-import gm from "gm";
+
 import Stripe from "stripe";
 import { saveLogs } from "./utils/logs";
 import { createServer } from "http";
 import { Server } from "socket.io";
+import fileRoutes from "./routes/fileRoutes";
 
 const app = express();
 const router = express.Router();
-const upload = multer();
 const stripe = new Stripe(Config.STRIPE_SECRET_KEY);
 const server = createServer(app);
 const io = new Server(server, {
@@ -28,7 +27,7 @@ const io = new Server(server, {
     credentials: true,
   },
   allowEIO3: true,
-  transports: ["websocket", "polling", "webtransport"],
+  transports: ["websocket", "polling"],
 });
 app.disable("x-powered-by");
 app.use(compression());
@@ -72,6 +71,7 @@ app.all("(.*)", (req, res, next) => {
 
 router.use(`/api/${Config.API_VERSION}/auth`, authRoutes);
 router.use(`/api/${Config.API_VERSION}/users`, userRoutes);
+router.use(`/api/${Config.API_VERSION}/upload`, fileRoutes);
 
 app.use((req, res, next) => {
   serviceResponse.notFound(res, "Sorry can't find that!", null);
