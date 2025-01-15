@@ -29,7 +29,7 @@ export class UserRepository implements IUserRepository {
     }
   }
 
-  async getByEmail(email: string): Promise<IUser | null> {
+  async getByEmail(email: string): Promise<any> {
     try {
       const user = await UserDal.getByEmail(email);
       return user;
@@ -38,7 +38,7 @@ export class UserRepository implements IUserRepository {
     }
   }
 
-  async getByUsername(username: string): Promise<IUser | null> {
+  async getByUsername(username: string): Promise<any> {
     try {
       const user = await UserDal.getByUsername(username);
       return user;
@@ -46,8 +46,7 @@ export class UserRepository implements IUserRepository {
       return null;
     }
   }
-
-  async getByPhone(phone: string): Promise<IUser | null> {
+  async getByPhone(phone: string): Promise<any> {
     try {
       const user = await UserDal.getByPhone(phone);
       return user;
@@ -73,7 +72,6 @@ export class UserRepository implements IUserRepository {
       return users;
     } catch (error) {
       return [];
-      ``;
     }
   }
 
@@ -114,21 +112,5 @@ export class UserRepository implements IUserRepository {
     } catch (error) {
       return false;
     }
-  }
-
-  async loginUsername({ username, password }: any): Promise<IUser | null> {
-    return null;
-  }
-
-  async loginEmail({ email, password }: any): Promise<IUser | null> {
-    return null;
-  }
-
-  async loginPhone({ phone, password }: any): Promise<IUser | null> {
-    return null;
-  }
-
-  async logout({ token }: any): Promise<boolean> {
-    return true;
   }
 }

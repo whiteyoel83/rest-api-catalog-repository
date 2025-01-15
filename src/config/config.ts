@@ -15,8 +15,9 @@ const {
   mysql: MYSQL = "mysql://user:password@127.0.0.1/catalog",
   postgresql: POSTGRESQL = "postgresql://user:password@127.0.0.1:5432/catalog",
   stripeSecretKey: STRIPE_SECRET_KEY = "sk_test_510i0o4o0o4o0o4o0o4o0o4o",
-  logsPath: LOGS_PATH = "../logs/",
+  logsPath: LOGS_PATH = "./logs/",
   serviceName: SERVICE_NAME = "catalog-api",
+  jwtTokenKey: JWT_TOKEN_KEY = "some-key",
 } = process.env;
 
 export const Config = {
@@ -33,4 +34,5 @@ export const Config = {
   STRIPE_SECRET_KEY,
   LOGS_PATH,
   SERVICE_NAME,
+  JWT_TOKEN_KEY,
 };

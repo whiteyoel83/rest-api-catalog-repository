@@ -7,7 +7,7 @@ import { DriversDB } from "../enums/drivers";
 import { Config } from "../config/config";
 
 export class UserDal {
-  static async loginUsername({ username, password }: any) {
+  static async loginUsername(username: string, password: string) {
     try {
       let userDal: any;
       switch (Config.DBDRIVER) {
@@ -33,7 +33,7 @@ export class UserDal {
     }
   }
 
-  static async loginEmail({ email, password }: any) {
+  static async loginEmail(email: string, password: string) {
     try {
       let userDal: any;
       switch (Config.DBDRIVER) {
@@ -58,7 +58,7 @@ export class UserDal {
       return error;
     }
   }
-  static async loginPhone({ phone, password }: any) {
+  static async loginPhone(phone: string, password: string) {
     try {
       let userDal: any;
       switch (Config.DBDRIVER) {
@@ -84,7 +84,7 @@ export class UserDal {
     }
   }
 
-  static async logout({ token }: any) {
+  static async logout(token: string) {
     try {
       let userDal: any;
       switch (Config.DBDRIVER) {
@@ -208,7 +208,7 @@ export class UserDal {
           userDal = UserDalMock;
           break;
       }
-      return await userDal.getByUsername(username);
+      return await userDal.getUserByUsername(username);
     } catch (error) {
       return error;
     }

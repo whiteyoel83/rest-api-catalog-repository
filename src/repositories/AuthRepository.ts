@@ -1,35 +1,91 @@
-import { UserService } from "../services/UserService"; // Assume a database service exists
-import { IProfile } from "../interfaces/IProfile";
+// UserRepository.ts
+
+import { UserDal } from "../dal/UserDal";
 import { IAuthRepository } from "../interfaces/IAuthRepository";
+import { IUser } from "../interfaces/IUser";
 
 export class AuthRepository implements IAuthRepository {
-  private service: UserService;
-  constructor(service: UserService) {
-    this.service = service;
+  private static instance: AuthRepository;
+
+  static getInstance(): AuthRepository {
+    if (!AuthRepository.instance) {
+      AuthRepository.instance = new AuthRepository();
+    }
+    return AuthRepository.instance;
   }
 
-  async login(email: string, password: string): Promise<IProfile | null> {
-    // Implementation to fetch user by email and password from the database
+  async loginEmail(email: string, password: string): Promise<any | null> {
+    try {
+      const newUser = await UserDal.loginEmail(email, password);
+      return newUser;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async loginUsername(username: string, password: string): Promise<any | null> {
+    try {
+      const newUser = await UserDal.loginUsername(username, password);
+      return newUser;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async loginPhone(phone: string, password: string): Promise<any | null> {
+    try {
+      const newUser = await UserDal.loginPhone(phone, password);
+      return newUser;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async register(
+    username: string,
+    email: string,
+    password: string
+  ): Promise<any | null> {
+    try {
+      const newUser = await UserDal.create({ username, email, password });
+      return newUser;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async getByEmail(email: string): Promise<any | null> {
+    try {
+      const user = await UserDal.getByEmail(email);
+      return user;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async getByUsername(username: string): Promise<any | null> {
+    try {
+      const user = await UserDal.getByUsername(username);
+      return user;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async getByPhone(phone: string): Promise<any | null> {
+    try {
+      const user = await UserDal.getByPhone(phone);
+      return user;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async profile(id: string): Promise<any | null> {
     return null;
   }
 
-  async register(profile: IProfile): Promise<IProfile> {
-    // Implementation to create a new user in the database
-    return profile;
-  }
-
-  async profile(id: string): Promise<IProfile | null> {
-    // Implementation to fetch user by ID from the database
-    return null;
-  }
-
-  async update(id: string, profile: IProfile): Promise<IProfile | null> {
-    // Implementation to update a user in the database
-    return null;
-  }
-
-  async delete(id: string): Promise<boolean> {
-    // Implementation to delete a user from the database
+  async logout(token: string): Promise<boolean> {
     return true;
   }
 }

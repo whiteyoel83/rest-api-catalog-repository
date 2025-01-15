@@ -1,25 +1,20 @@
 import express from "express";
+import { AuthController } from "../controllers/AuthController";
 
 const authRoutes = express.Router();
+const authController = new AuthController();
 
-authRoutes.get("/login", (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password) {
-    return res.status(400).json({ message: "Missing email or password" });
+authRoutes.post("/login", authController.login);
+authRoutes.post("/register", authController.create);
+authRoutes.get("/current", ensureAuthenticated, authController.current);
+
+function ensureAuthenticated(req: any, res: any, next: any) {
+  if (req.user) {
+    next();
+  } else {
+    res.status(401).json({ message: "User is not authenticated" });
   }
-  return res.json({ message: "Login successful" });
-});
-
-authRoutes.post("/register", (req, res) => {
-  const { email, password, username } = req.body;
-  if (!email || !password || !username) {
-    return res
-      .status(400)
-      .json({ message: "Missing email, password or username" });
-  }
-  return res.json({ message: "Register successful" });
-});
-
+}
 // //Bind the method when passing It
 // userRoutes.delete(
 //   "/loginbyemail",

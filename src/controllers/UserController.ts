@@ -72,6 +72,8 @@ export class UserController {
         password: req.body.password,
         username: req.body.username,
         phone: req.body.phone,
+        "2faEnable": false,
+        "2faSecret": "",
       };
       const newUser = await this.userRepository.create(user);
       return serviceResponse.ok(

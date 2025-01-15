@@ -15,6 +15,7 @@ import { saveLogs } from "./utils/logs";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import fileRoutes from "./routes/fileRoutes";
+import path from "path";
 
 const app = express();
 const router = express.Router();
@@ -77,8 +78,8 @@ app.use((req, res, next) => {
   serviceResponse.notFound(res, "Sorry can't find that!", null);
 });
 
-saveLogs("error.log");
-saveLogs("info.log");
-saveLogs("warning.log");
+saveLogs(path.join(__dirname, "../../", "error.log"));
+saveLogs(path.join(__dirname, "../../", "info.log"));
+saveLogs(path.join(__dirname, "../../", "warning.log"));
 
 export default app;
