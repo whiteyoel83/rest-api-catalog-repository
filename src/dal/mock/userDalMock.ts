@@ -1,6 +1,6 @@
-import { TUser } from "../../types/userType";
-
 const list: any[] = require("./users.json");
+const userRefreshTokens: any[] = [];
+const userInvalidTokens: any[] = [];
 
 export class UserDalMock {
   static getAll() {
@@ -47,15 +47,49 @@ export class UserDalMock {
     }
   }
 
+  static async getRefreshToken(refreshToken: string, userId: string) {
+    try {
+      const index = userRefreshTokens.findIndex(
+        (user: any) =>
+          user.refreshToken === refreshToken && user.userId === userId
+      );
+
+      if (index === -1) {
+        console.error("invalid index" + index);
+        return null;
+      }
+
+      return userRefreshTokens[index];
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
   static create(element: any) {
     try {
       const newElement: any = {
         id: crypto.randomUUID(),
+        "2fEnable": false,
+        "2fSecret": "",
         ...element,
       };
 
       list.push(newElement);
       return newElement;
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  static async createRefreshToken(userId: string, refreshToken: string) {
+    try {
+      userRefreshTokens.push({
+        refreshToken,
+        userId,
+      });
+      return true;
     } catch (error) {
       console.error(error);
       return error;
@@ -93,6 +127,25 @@ export class UserDalMock {
         return false;
       }
       list.splice(index, 1);
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  }
+
+  static async deleteRefreshToken(userId: string) {
+    try {
+      const index = userRefreshTokens.findIndex(
+        (user: any) => user.userId === userId
+      );
+
+      if (index === -1) {
+        console.error("invalid index" + index);
+        return false;
+      }
+
+      userRefreshTokens.splice(index, 1);
       return true;
     } catch (error) {
       console.error(error);

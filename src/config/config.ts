@@ -17,7 +17,13 @@ const {
   stripeSecretKey: STRIPE_SECRET_KEY = "sk_test_510i0o4o0o4o0o4o0o4o0o4o",
   logsPath: LOGS_PATH = "./logs/",
   serviceName: SERVICE_NAME = "catalog-api",
-  jwtTokenKey: JWT_TOKEN_KEY = "some-key",
+  accessTokenSecret: ACCESS_TOKEN_SECRET = "some-key",
+  accessTokenExpiresIn: ACCESS_TOKEN_EXPIRES_IN = 10,
+  refreshTokenSecret: REFRESH_TOKEN_SECRET = "some-key",
+  refreshTokenExpiresIn: REFRESH_TOKEN_EXPIRES_IN = 10,
+  cacheTemporaryTokenExpiresInSeconds:
+    CACHE_TEMPORARY_TOKEN_EXPIRES_IN_SECONDS = 10,
+  cacheTemporaryTokenPrefix: CACHE_TEMPORARY_TOKEN_PREFIX = "tempToken",
 } = process.env;
 
 export const Config = {
@@ -34,5 +40,10 @@ export const Config = {
   STRIPE_SECRET_KEY,
   LOGS_PATH,
   SERVICE_NAME,
-  JWT_TOKEN_KEY,
+  ACCESS_TOKEN_SECRET,
+  ACCESS_TOKEN_EXPIRES_IN,
+  REFRESH_TOKEN_SECRET,
+  REFRESH_TOKEN_EXPIRES_IN,
+  CACHE_TEMPORARY_TOKEN_EXPIRES_IN_SECONDS,
+  CACHE_TEMPORARY_TOKEN_PREFIX,
 };

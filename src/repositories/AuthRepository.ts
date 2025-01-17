@@ -54,6 +54,15 @@ export class AuthRepository implements IAuthRepository {
     }
   }
 
+  async getById(id: string): Promise<any | null> {
+    try {
+      const user = await UserDal.getById(id);
+      return user;
+    } catch (error) {
+      return null;
+    }
+  }
+
   async getByEmail(email: string): Promise<any | null> {
     try {
       const user = await UserDal.getByEmail(email);

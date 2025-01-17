@@ -29,6 +29,18 @@ export class UserRepository implements IUserRepository {
     }
   }
 
+  async getRefreshToken(refreshToken: string, userId: string): Promise<any> {
+    try {
+      const userRefreshToken = await UserDal.getRefreshToken(
+        refreshToken,
+        userId
+      );
+      return userRefreshToken;
+    } catch (error) {
+      return null;
+    }
+  }
+
   async getByEmail(email: string): Promise<any> {
     try {
       const user = await UserDal.getByEmail(email);
@@ -96,6 +108,15 @@ export class UserRepository implements IUserRepository {
     }
   }
 
+  async createRefreshToken(userId: string, refreshToken: string): Promise<any> {
+    try {
+      const newUser = await UserDal.createRefreshToken(userId, refreshToken);
+      return newUser;
+    } catch (error) {
+      return null;
+    }
+  }
+
   async update(id: string, user: IUser): Promise<IUser | null> {
     try {
       const newUser = await UserDal.updated(id, user);
@@ -108,6 +129,15 @@ export class UserRepository implements IUserRepository {
   async delete(id: string): Promise<boolean> {
     try {
       await UserDal.delete(id);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  async deleteRefreshToken(userId: string): Promise<boolean> {
+    try {
+      await UserDal.deleteRefreshToken(userId);
       return true;
     } catch (error) {
       return false;

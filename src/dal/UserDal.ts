@@ -136,6 +136,32 @@ export class UserDal {
     }
   }
 
+  static async getRefreshToken(refreshToken: string, userId: string) {
+    try {
+      let userDal: any;
+      switch (Config.DBDRIVER) {
+        case DriversDB.MONGODB:
+          userDal = UserDalMongoDB;
+          break;
+        case DriversDB.SQLITE:
+          userDal = UserDalSQLite;
+          break;
+        case DriversDB.MYSQL:
+          userDal = UserDalMysql;
+          break;
+        case DriversDB.POSTGRES:
+          userDal = UserDalPostgres;
+          break;
+        default:
+          userDal = UserDalMock;
+          break;
+      }
+      return await userDal.getRefreshToken(refreshToken, userId);
+    } catch (error) {
+      return error;
+    }
+  }
+
   static async getByEmail(email: string) {
     try {
       let userDal: any;
@@ -240,6 +266,32 @@ export class UserDal {
     }
   }
 
+  static async createRefreshToken(userId: string, refreshToken: string) {
+    try {
+      let userDal: any;
+      switch (Config.DBDRIVER) {
+        case DriversDB.MONGODB:
+          userDal = UserDalMongoDB;
+          break;
+        case DriversDB.SQLITE:
+          userDal = UserDalSQLite;
+          break;
+        case DriversDB.MYSQL:
+          userDal = UserDalMysql;
+          break;
+        case DriversDB.POSTGRES:
+          userDal = UserDalPostgres;
+          break;
+        default:
+          userDal = UserDalMock;
+          break;
+      }
+      return await userDal.createRefreshToken(userId, refreshToken);
+    } catch (error) {
+      return error;
+    }
+  }
+
   static async updated(id: string, user: any) {
     try {
       let userDal: any;
@@ -287,6 +339,32 @@ export class UserDal {
           break;
       }
       return await userDal.delete(id);
+    } catch (error) {
+      return error;
+    }
+  }
+
+  static async deleteRefreshToken(userId: string) {
+    try {
+      let userDal: any;
+      switch (Config.DBDRIVER) {
+        case DriversDB.MONGODB:
+          userDal = UserDalMongoDB;
+          break;
+        case DriversDB.SQLITE:
+          userDal = UserDalSQLite;
+          break;
+        case DriversDB.MYSQL:
+          userDal = UserDalMysql;
+          break;
+        case DriversDB.POSTGRES:
+          userDal = UserDalPostgres;
+          break;
+        default:
+          userDal = UserDalMock;
+          break;
+      }
+      return await userDal.deleteRefreshToken(userId);
     } catch (error) {
       return error;
     }
