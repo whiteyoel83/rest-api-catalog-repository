@@ -18,11 +18,11 @@ const {
   logsPath: LOGS_PATH = "./logs/",
   serviceName: SERVICE_NAME = "catalog-api",
   accessTokenSecret: ACCESS_TOKEN_SECRET = "some-key",
-  accessTokenExpiresIn: ACCESS_TOKEN_EXPIRES_IN = 10,
+  accessTokenExpiresIn: ACCESS_TOKEN_EXPIRES_IN = "30m",
   refreshTokenSecret: REFRESH_TOKEN_SECRET = "some-key",
-  refreshTokenExpiresIn: REFRESH_TOKEN_EXPIRES_IN = 10,
+  refreshTokenExpiresIn: REFRESH_TOKEN_EXPIRES_IN = "1w",
   cacheTemporaryTokenExpiresInSeconds:
-    CACHE_TEMPORARY_TOKEN_EXPIRES_IN_SECONDS = 10,
+    CACHE_TEMPORARY_TOKEN_EXPIRES_IN_SECONDS = 180,
   cacheTemporaryTokenPrefix: CACHE_TEMPORARY_TOKEN_PREFIX = "tempToken",
 } = process.env;
 

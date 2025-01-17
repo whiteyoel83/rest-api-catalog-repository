@@ -162,6 +162,32 @@ export class UserDal {
     }
   }
 
+  static async getInvalidToken(accessToken: string) {
+    try {
+      let userDal: any;
+      switch (Config.DBDRIVER) {
+        case DriversDB.MONGODB:
+          userDal = UserDalMongoDB;
+          break;
+        case DriversDB.SQLITE:
+          userDal = UserDalSQLite;
+          break;
+        case DriversDB.MYSQL:
+          userDal = UserDalMysql;
+          break;
+        case DriversDB.POSTGRES:
+          userDal = UserDalPostgres;
+          break;
+        default:
+          userDal = UserDalMock;
+          break;
+      }
+      return await userDal.getInvalidToken(accessToken);
+    } catch (error) {
+      return error;
+    }
+  }
+
   static async getByEmail(email: string) {
     try {
       let userDal: any;
@@ -292,6 +318,40 @@ export class UserDal {
     }
   }
 
+  static async createInvalidTokens(
+    accessToken: string,
+    userId: string,
+    expirationTime: string
+  ) {
+    try {
+      let userDal: any;
+      switch (Config.DBDRIVER) {
+        case DriversDB.MONGODB:
+          userDal = UserDalMongoDB;
+          break;
+        case DriversDB.SQLITE:
+          userDal = UserDalSQLite;
+          break;
+        case DriversDB.MYSQL:
+          userDal = UserDalMysql;
+          break;
+        case DriversDB.POSTGRES:
+          userDal = UserDalPostgres;
+          break;
+        default:
+          userDal = UserDalMock;
+          break;
+      }
+      return await userDal.createInvalidTokens(
+        accessToken,
+        userId,
+        expirationTime
+      );
+    } catch (error) {
+      return error;
+    }
+  }
+
   static async updated(id: string, user: any) {
     try {
       let userDal: any;
@@ -313,6 +373,46 @@ export class UserDal {
           break;
       }
       return await userDal.updated(id, user);
+    } catch (error) {
+      return error;
+    }
+  }
+
+  static async update2factorAuthentication(id: string, secret: string) {
+    try {
+      let userDal: any;
+      switch (Config.DBDRIVER) {
+        case DriversDB.MONGODB:
+          userDal = UserDalMongoDB;
+          break;
+        case DriversDB.SQLITE:
+          userDal = UserDalSQLite;
+          break;
+        default:
+          userDal = UserDalMock;
+          break;
+      }
+      return await userDal.update2factorAuthentication(id, secret);
+    } catch (error) {
+      return error;
+    }
+  }
+
+  static async update2factorAuthenticationEnable(id: string) {
+    try {
+      let userDal: any;
+      switch (Config.DBDRIVER) {
+        case DriversDB.MONGODB:
+          userDal = UserDalMongoDB;
+          break;
+        case DriversDB.SQLITE:
+          userDal = UserDalSQLite;
+          break;
+        default:
+          userDal = UserDalMock;
+          break;
+      }
+      return await userDal.update2factorAuthenticationEnable(id);
     } catch (error) {
       return error;
     }
@@ -344,7 +444,7 @@ export class UserDal {
     }
   }
 
-  static async deleteRefreshToken(userId: string) {
+  static async deleteRefreshTokenById(userId: string) {
     try {
       let userDal: any;
       switch (Config.DBDRIVER) {
@@ -364,7 +464,33 @@ export class UserDal {
           userDal = UserDalMock;
           break;
       }
-      return await userDal.deleteRefreshToken(userId);
+      return await userDal.deleteRefreshTokenById(userId);
+    } catch (error) {
+      return error;
+    }
+  }
+
+  static async deleteRefreshTokenByToken(token: string) {
+    try {
+      let userDal: any;
+      switch (Config.DBDRIVER) {
+        case DriversDB.MONGODB:
+          userDal = UserDalMongoDB;
+          break;
+        case DriversDB.SQLITE:
+          userDal = UserDalSQLite;
+          break;
+        case DriversDB.MYSQL:
+          userDal = UserDalMysql;
+          break;
+        case DriversDB.POSTGRES:
+          userDal = UserDalPostgres;
+          break;
+        default:
+          userDal = UserDalMock;
+          break;
+      }
+      return await userDal.deleteRefreshTokenByToken(token);
     } catch (error) {
       return error;
     }

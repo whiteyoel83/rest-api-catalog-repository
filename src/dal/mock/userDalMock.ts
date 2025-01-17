@@ -66,6 +66,24 @@ export class UserDalMock {
     }
   }
 
+  static async getInvalidToken(accessToken: string) {
+    try {
+      const index = userInvalidTokens.findIndex(
+        (user: any) => user.accessToken === accessToken
+      );
+
+      if (index === -1) {
+        console.error("invalid index" + index);
+        return null;
+      }
+
+      return userInvalidTokens[index];
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
   static create(element: any) {
     try {
       const newElement: any = {
@@ -96,6 +114,26 @@ export class UserDalMock {
     }
   }
 
+  static async createInvalidTokens(
+    accessToken: string,
+    userId: string,
+    expirationTime: string
+  ) {
+    try {
+      const newElement: any = {
+        accessToken,
+        userId,
+        expirationTime,
+      };
+
+      userInvalidTokens.push(newElement);
+      return newElement;
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
   static async update(id: string, element: any) {
     try {
       const index = list.findIndex((user: any) => user.id === id);
@@ -119,6 +157,40 @@ export class UserDalMock {
     }
   }
 
+  static async update2factorAuthentication(id: string, secret: string) {
+    try {
+      const index = list.findIndex((user: any) => user.id === id);
+      if (index === -1) {
+        console.error("invalid index" + index);
+        return false;
+      }
+
+      list[index]["2faSecret"] = secret;
+
+      return list[index];
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  static async update2factorAuthenticationEnable(id: string) {
+    try {
+      const index = list.findIndex((user: any) => user.id === id);
+      if (index === -1) {
+        console.error("invalid index" + index);
+        return false;
+      }
+
+      list[index]["2faEnable"] = true;
+
+      return list[index];
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
   static async delete(id: string) {
     try {
       const index = list.findIndex((user: any) => user.id === id);
@@ -134,10 +206,29 @@ export class UserDalMock {
     }
   }
 
-  static async deleteRefreshToken(userId: string) {
+  static async deleteRefreshTokenById(userId: string) {
     try {
       const index = userRefreshTokens.findIndex(
         (user: any) => user.userId === userId
+      );
+
+      if (index === -1) {
+        console.error("invalid index" + index);
+        return false;
+      }
+
+      userRefreshTokens.splice(index, 1);
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  }
+
+  static async deleteRefreshTokenByToken(token: string) {
+    try {
+      const index = userRefreshTokens.findIndex(
+        (user: any) => user.refreshToken === token
       );
 
       if (index === -1) {

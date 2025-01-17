@@ -41,6 +41,15 @@ export class UserRepository implements IUserRepository {
     }
   }
 
+  async getInvalidToken(accessToken: string): Promise<any> {
+    try {
+      const userInvalidToken = await UserDal.getInvalidToken(accessToken);
+      return userInvalidToken;
+    } catch (error) {
+      return null;
+    }
+  }
+
   async getByEmail(email: string): Promise<any> {
     try {
       const user = await UserDal.getByEmail(email);
@@ -117,9 +126,44 @@ export class UserRepository implements IUserRepository {
     }
   }
 
+  async createInvalidTokens(
+    accessToken: string,
+    userId: string,
+    expirationTime: string
+  ) {
+    try {
+      const newUser = await UserDal.createInvalidTokens(
+        accessToken,
+        userId,
+        expirationTime
+      );
+      return newUser;
+    } catch (error) {
+      return null;
+    }
+  }
+
   async update(id: string, user: IUser): Promise<IUser | null> {
     try {
       const newUser = await UserDal.updated(id, user);
+      return newUser;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async update2factorAuthentication(id: string, secret: string): Promise<any> {
+    try {
+      const newUser = await UserDal.update2factorAuthentication(id, secret);
+      return newUser;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async update2factorAuthenticationEnable(id: string): Promise<any> {
+    try {
+      const newUser = await UserDal.update2factorAuthenticationEnable(id);
       return newUser;
     } catch (error) {
       return null;
@@ -135,9 +179,18 @@ export class UserRepository implements IUserRepository {
     }
   }
 
-  async deleteRefreshToken(userId: string): Promise<boolean> {
+  async deleteRefreshTokenById(userId: string): Promise<boolean> {
     try {
-      await UserDal.deleteRefreshToken(userId);
+      await UserDal.deleteRefreshTokenById(userId);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  async deleteRefreshTokenByToken(token: string): Promise<boolean> {
+    try {
+      await UserDal.deleteRefreshTokenByToken(token);
       return true;
     } catch (error) {
       return false;

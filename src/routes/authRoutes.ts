@@ -1,8 +1,5 @@
 import express from "express";
 import { AuthController } from "../controllers/AuthController";
-import { serviceResponse } from "../utils/serviceResponse";
-import { Config } from "../config/config";
-import jwt from "jsonwebtoken";
 import { ensureAuthenticated } from "../middleware/middlewareAuthenticated";
 
 const authRoutes = express.Router();

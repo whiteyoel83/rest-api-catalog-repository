@@ -80,7 +80,7 @@ export class AuthController {
 
         cache.set(
           Config.CACHE_TEMPORARY_TOKEN_PREFIX + tempToken,
-          userDB._id,
+          userDB.id,
           Config.CACHE_TEMPORARY_TOKEN_EXPIRES_IN_SECONDS
         );
 
@@ -89,7 +89,7 @@ export class AuthController {
           expiresInSeconds: Config.CACHE_TEMPORARY_TOKEN_EXPIRES_IN_SECONDS,
         });
       } else {
-        const acccessToken = jwt.sign(
+        const accessToken = jwt.sign(
           { id: userDB.id },
           Config.ACCESS_TOKEN_SECRET,
           {
@@ -98,12 +98,24 @@ export class AuthController {
           }
         );
 
+        const refreshToken = jwt.sign(
+          { userId: userDB.id },
+          Config.REFRESH_TOKEN_SECRET,
+          {
+            subject: "refreshToken",
+            expiresIn: Config.REFRESH_TOKEN_EXPIRES_IN,
+          }
+        );
+
+        await this.userRepository.createRefreshToken(userDB.id, refreshToken);
+
         return serviceResponse.ok(res, "Login successful", {
           id: userDB.id,
           username: userDB.username,
           email: userDB.email,
           phone: userDB.phone,
-          accessToken: acccessToken,
+          accessToken,
+          refreshToken,
         });
       }
     } catch (error) {
@@ -156,7 +168,7 @@ export class AuthController {
       );
 
       const isUserRefreshTokenCreated =
-        await this.userRepository.createRefreshToken(user._id, refreshToken);
+        await this.userRepository.createRefreshToken(user.id, refreshToken);
 
       return res.status(200).json({
         id: user.id,
@@ -195,7 +207,7 @@ export class AuthController {
           .json({ message: "Refresh token invalid or expired" });
       }
 
-      await this.userRepository.deleteRefreshToken(decodedRefreshToken.id);
+      await this.userRepository.deleteRefreshTokenById(decodedRefreshToken.id);
 
       const accessToken = jwt.sign(
         { userId: decodedRefreshToken.userId },
@@ -215,6 +227,12 @@ export class AuthController {
           decodedRefreshToken
         );
 
+      if (!isUserRefreshTokenCreated) {
+        return res
+          .status(401)
+          .json({ message: "Error creating refresh token" });
+      }
+
       return res.status(200).json({
         accessToken,
         refreshToken: newRefreshToken,
@@ -233,19 +251,135 @@ export class AuthController {
     }
   };
 
-  generate2factorAuthentication = async (
-    req: any,
-    res: any
-  ): Promise<any> => {};
+  generate2factorAuthentication = async (req: any, res: any): Promise<any> => {
+    try {
+      const user = await this.userRepository.getById(req.user.id);
 
-  validate2factorAuthentication = async (
-    req: any,
-    res: any
-  ): Promise<any> => {};
+      const secret = authenticator.generateSecret();
+      const uri = authenticator.keyuri(user.email, "example.com", secret);
 
-  logoutDevice = async (req: any, res: any): Promise<any> => {};
+      await this.userRepository.update2factorAuthentication(
+        req.user.id,
+        secret
+      );
 
-  logoutDevices = async (req: any, res: any): Promise<any> => {};
+      const qrCode = await qrcode.toBuffer(uri, {
+        // type: "image/png",
+        // margin: 1,
+      });
+
+      res.setHeader("Content-Disposition", "attachment; filename=qrcode.png");
+      return res.status(200).type("image/png").send(qrCode);
+    } catch (error) {
+      return serviceResponse.internalServerError(
+        res,
+        CATALOG.GENERAL.MESSAGES.INTERNAL_SERVER_ERROR,
+        null
+      );
+    }
+  };
+
+  validate2factorAuthentication = async (req: any, res: any): Promise<any> => {
+    try {
+      const { totp } = req.body;
+
+      if (!totp) {
+        return serviceResponse.unprocessableEntity(
+          res,
+          "TOTP is required",
+          null
+        );
+      }
+
+      const user = await this.userRepository.getById(req.user.id);
+
+      const verified = authenticator.check(totp, user["2faSecret"]);
+
+      if (!verified) {
+        return serviceResponse.badRequest(
+          res,
+          "TOTP is not correct or expired",
+          null
+        );
+      }
+
+      await this.userRepository.update2factorAuthenticationEnable(req.user.id);
+
+      return res.status(200).json({ message: "TOTP validated successfully" });
+      // const user = await this.userRepository.getById(req.user.id);
+
+      // if (!user["2faEnable"]) {
+      //   return serviceResponse.badRequest(
+      //     res,
+      //     "2fa is not enabled for this user",
+      //     null
+      //   );
+      // }
+
+      // const secret = authenticator.generateSecret();
+      // const uri = authenticator.keyuri(user.email, "example.com", secret);
+
+      // await this.userRepository.update2factorAuthentication(
+      //   req.user.id,
+      //   secret
+      // );
+
+      // const qrCode = await qrcode.toBuffer(uri, {
+      //   // type: "image/png",
+      //   // margin: 1,
+      // });
+
+      // res.setHeader("Content-Disposition", "attachment; filename=qrcode.png");
+      // return res.status(200).type("image/png").send(qrCode);
+    } catch (error) {
+      return serviceResponse.internalServerError(
+        res,
+        CATALOG.GENERAL.MESSAGES.INTERNAL_SERVER_ERROR,
+        null
+      );
+    }
+  };
+
+  logoutDevice = async (req: any, res: any): Promise<any> => {
+    try {
+      const { refreshToken } = req.body;
+      await this.userRepository.deleteRefreshTokenByToken(refreshToken);
+
+      await this.userRepository.createInvalidTokens(
+        req.accessToken.value,
+        req.user.id,
+        req.accessToken.exp
+      );
+
+      return res.status(204).send();
+    } catch (error) {
+      return serviceResponse.internalServerError(
+        res,
+        CATALOG.GENERAL.MESSAGES.INTERNAL_SERVER_ERROR,
+        null
+      );
+    }
+  };
+
+  logoutDevices = async (req: any, res: any): Promise<any> => {
+    try {
+      await this.userRepository.deleteRefreshTokenById(req.user.id);
+
+      await this.userRepository.createInvalidTokens(
+        req.accessToken.value,
+        req.user.id,
+        req.accessToken.exp
+      );
+
+      return res.status(204).send();
+    } catch (error) {
+      return serviceResponse.internalServerError(
+        res,
+        CATALOG.GENERAL.MESSAGES.INTERNAL_SERVER_ERROR,
+        null
+      );
+    }
+  };
 
   current = async (req: any, res: any): Promise<any> => {
     try {
