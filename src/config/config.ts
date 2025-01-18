@@ -24,6 +24,8 @@ const {
   cacheTemporaryTokenExpiresInSeconds:
     CACHE_TEMPORARY_TOKEN_EXPIRES_IN_SECONDS = 180,
   cacheTemporaryTokenPrefix: CACHE_TEMPORARY_TOKEN_PREFIX = "tempToken",
+  COOKIE_SECRET: COOKIE_SECRET = "some-key",
+  NODE_ENV: NODE_ENV = "development",
 } = process.env;
 
 export const Config = {
@@ -46,4 +48,6 @@ export const Config = {
   REFRESH_TOKEN_EXPIRES_IN,
   CACHE_TEMPORARY_TOKEN_EXPIRES_IN_SECONDS,
   CACHE_TEMPORARY_TOKEN_PREFIX,
+  COOKIE_SECRET,
+  NODE_ENV,
 };

@@ -16,6 +16,7 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import fileRoutes from "./routes/fileRoutes";
 import path from "path";
+import viewsRoutes from "./routes/views.Routes";
 
 const app = express();
 const router = express.Router();
@@ -32,13 +33,15 @@ const io = new Server(server, {
 });
 app.disable("x-powered-by");
 app.use(compression());
-app.use(cookieParser());
+app.use(cookieParser(Config.COOKIE_SECRET));
 app.use(bodyParser.json());
 app.use(morgan("dev"));
 app.use(helmet());
 app.use(corsMiddleware());
 app.use(express.json());
 app.use(router);
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
 
 // custom error handler
 app.use((err: any, req: any, res: any, next: any) => {
@@ -47,7 +50,12 @@ app.use((err: any, req: any, res: any, next: any) => {
 });
 
 app.get("/", (req, res) => {
+  /** Response with a welcome message */
   serviceResponse.ok(res, "Welcome to the API", null);
+  // Cookies that have not been signed
+  console.log("Cookies: ", req.cookies);
+  // Cookies that have been signed
+  console.log("Signed Cookies: ", req.signedCookies);
 });
 
 //Prevent open redirects from malicious websites
@@ -70,6 +78,7 @@ app.all("(.*)", (req, res, next) => {
   next();
 });
 
+router.use(`/view`, viewsRoutes);
 router.use(`/api/${Config.API_VERSION}/auth`, authRoutes);
 router.use(`/api/${Config.API_VERSION}/users`, userRoutes);
 router.use(`/api/${Config.API_VERSION}/upload`, fileRoutes);

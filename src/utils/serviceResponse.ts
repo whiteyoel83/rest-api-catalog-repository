@@ -1,3 +1,5 @@
+import { Config } from "../config/config";
+
 export const serviceResponse = {
   statusCodes: {
     continue: 100,
@@ -109,7 +111,29 @@ export const serviceResponse = {
     });
   },
 
-  ok(res: any, message: string, data: any) {
+  ok(res: any, message: string, data: any, cookie?: any) {
+    if (cookie) {
+      return res
+        .cookie("accessToken", cookie.accessToken, {
+          maxAge: 1000 * 60 * 60, // valid for 1 hour,
+          //expires: new Date(Date.now() + cookie.expiresIn * 1000),
+          httpOnly: Config.NODE_ENV === "production", // only allow access from the same origin
+          secure: true, // only send the cookie over HTTPS
+          sameSite: "strict", // strictly enforce same-site cookie policy and in the same domain
+        })
+        .cookie("refreshToken", cookie.refreshToken, {
+          maxAge: 1000 * 60 * 60 * 24 * 7, // valid for 1 week,
+          httpOnly: Config.NODE_ENV === "production",
+          secure: true,
+          sameSite: "strict",
+        })
+        .send({
+          success: true,
+          message,
+          data,
+          status: this.statusCodes.ok,
+        });
+    }
     return res.status(this.statusCodes.ok).json({
       success: true,
       message,

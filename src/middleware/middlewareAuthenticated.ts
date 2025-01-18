@@ -5,7 +5,7 @@ import { UserRepository } from "../repositories/UserRepository";
 import { CATALOG } from "../const/catalog";
 
 export async function ensureAuthenticated(req: any, res: any, next: any) {
-  const accessToken = req.headers.authorization;
+  const accessToken = req.cookies.accessToken;
 
   if (!accessToken) {
     return serviceResponse.unauthorized(res, "Access token not found", null);

@@ -90,7 +90,7 @@ export class AuthController {
         });
       } else {
         const accessToken = jwt.sign(
-          { id: userDB.id },
+          { id: userDB.id, username: userDB.username, email: userDB.email },
           Config.ACCESS_TOKEN_SECRET,
           {
             subject: "accessToApiForUser",
@@ -99,7 +99,7 @@ export class AuthController {
         );
 
         const refreshToken = jwt.sign(
-          { userId: userDB.id },
+          { id: userDB.id, username: userDB.username, email: userDB.email },
           Config.REFRESH_TOKEN_SECRET,
           {
             subject: "refreshToken",
@@ -107,18 +107,28 @@ export class AuthController {
           }
         );
 
+        //save refresh token in database
         await this.userRepository.createRefreshToken(userDB.id, refreshToken);
 
-        return serviceResponse.ok(res, "Login successful", {
-          id: userDB.id,
-          username: userDB.username,
-          email: userDB.email,
-          phone: userDB.phone,
-          accessToken,
-          refreshToken,
-        });
+        return serviceResponse.ok(
+          res,
+          "Login successful",
+          {
+            id: userDB.id,
+            username: userDB.username,
+            email: userDB.email,
+            phone: userDB.phone,
+            //accessToken,
+            //refreshToken,
+          },
+          {
+            accessToken,
+            refreshToken,
+          }
+        );
       }
     } catch (error) {
+      console.error(error);
       return serviceResponse.internalServerError(
         res,
         CATALOG.GENERAL.MESSAGES.INTERNAL_SERVER_ERROR,
@@ -156,13 +166,13 @@ export class AuthController {
       }
 
       const accessToken = jwt.sign(
-        { userId: user.id },
+        { userId: user.id, username: user.username, email: user.email },
         Config.ACCESS_TOKEN_SECRET,
         { subject: "accessApi", expiresIn: Config.ACCESS_TOKEN_EXPIRES_IN }
       );
 
       const refreshToken = jwt.sign(
-        { userId: user.id },
+        { userId: user.id, username: user.username, email: user.email },
         Config.REFRESH_TOKEN_SECRET,
         { subject: "refreshToken", expiresIn: Config.REFRESH_TOKEN_EXPIRES_IN }
       );
@@ -170,13 +180,29 @@ export class AuthController {
       const isUserRefreshTokenCreated =
         await this.userRepository.createRefreshToken(user.id, refreshToken);
 
-      return res.status(200).json({
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        accessToken,
-        refreshToken,
-      });
+      // return res.status(200).json({
+      //   id: user.id,
+      //   name: user.name,
+      //   email: user.email,
+      //   accessToken,
+      //   refreshToken,
+      // });
+      return serviceResponse.ok(
+        res,
+        "Login successful",
+        {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          phone: user.phone,
+          //accessToken,
+          //refreshToken,
+        },
+        {
+          accessToken,
+          refreshToken,
+        }
+      );
     } catch (error) {
       console.log(error);
       return serviceResponse.internalServerError(res, "Something broke!", null);
@@ -185,7 +211,7 @@ export class AuthController {
 
   refreshToken = async (req: any, res: any): Promise<any> => {
     try {
-      const { refreshToken } = req.body;
+      const { refreshToken } = req.cookies.refreshToken;
 
       if (!refreshToken) {
         return res.status(401).json({ message: "Refresh token not found" });
@@ -210,13 +236,21 @@ export class AuthController {
       await this.userRepository.deleteRefreshTokenById(decodedRefreshToken.id);
 
       const accessToken = jwt.sign(
-        { userId: decodedRefreshToken.userId },
+        {
+          userId: decodedRefreshToken.userId,
+          username: decodedRefreshToken.username,
+          email: decodedRefreshToken.email,
+        },
         Config.ACCESS_TOKEN_SECRET,
         { subject: "accessApi", expiresIn: Config.ACCESS_TOKEN_EXPIRES_IN }
       );
 
       const newRefreshToken = jwt.sign(
-        { userId: decodedRefreshToken.userId },
+        {
+          userId: decodedRefreshToken.userId,
+          username: decodedRefreshToken.username,
+          email: decodedRefreshToken.email,
+        },
         Config.REFRESH_TOKEN_SECRET,
         { subject: "refreshToken", expiresIn: Config.REFRESH_TOKEN_EXPIRES_IN }
       );
@@ -233,7 +267,11 @@ export class AuthController {
           .json({ message: "Error creating refresh token" });
       }
 
-      return res.status(200).json({
+      // return res.status(200).json({
+      //   accessToken,
+      //   refreshToken: newRefreshToken,
+      // });
+      return serviceResponse.ok(res, "refreshToken successful", null, {
         accessToken,
         refreshToken: newRefreshToken,
       });
@@ -342,7 +380,8 @@ export class AuthController {
 
   logoutDevice = async (req: any, res: any): Promise<any> => {
     try {
-      const { refreshToken } = req.body;
+      const { refreshToken } = req.cookies.refreshToken;
+      console.log(refreshToken);
       await this.userRepository.deleteRefreshTokenByToken(refreshToken);
 
       await this.userRepository.createInvalidTokens(
@@ -350,8 +389,11 @@ export class AuthController {
         req.user.id,
         req.accessToken.exp
       );
-
-      return res.status(204).send();
+      return res
+        .clearCookie("accessToken")
+        .clearCookie("refreshToken")
+        .status(204)
+        .redirect("/view/login");
     } catch (error) {
       return serviceResponse.internalServerError(
         res,
@@ -370,8 +412,11 @@ export class AuthController {
         req.user.id,
         req.accessToken.exp
       );
-
-      return res.status(204).send();
+      return res
+        .clearCookie("accessToken")
+        .clearCookie("refreshToken")
+        .status(204)
+        .redirect("/view/login");
     } catch (error) {
       return serviceResponse.internalServerError(
         res,

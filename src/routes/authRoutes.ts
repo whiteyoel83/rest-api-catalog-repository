@@ -23,12 +23,12 @@ authRoutes.post(
   ensureAuthenticated,
   authController.validate2factorAuthentication
 );
-authRoutes.get(
+authRoutes.post(
   "/logout-device",
   ensureAuthenticated,
   authController.logoutDevice
 );
-authRoutes.get(
+authRoutes.post(
   "/logout-devices",
   ensureAuthenticated,
   authController.logoutDevices
