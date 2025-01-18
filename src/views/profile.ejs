@@ -55,22 +55,25 @@
       .profile-container button:hover {
         background: #0056b3;
       }
-      .success {
+      .profile-container .success {
         color: green;
         font-size: 0.9em;
         margin-top: 10px;
       }
-      .error {
+      .profile-container .error {
         color: red;
         font-size: 0.9em;
         margin-top: 10px;
+      }
+      .profile-container .divider {
+        margin: 20px 0;
+        border-top: 1px solid #ddd;
       }
     </style>
   </head>
   <body>
     <div class="profile-container">
       <h1>Profile</h1>
-      <h2>Hello, <%= user.username %></h2>
       <form id="profileForm">
         <div class="field">
           <label for="username">Username</label>
@@ -79,7 +82,6 @@
             id="username"
             placeholder="Enter your username"
             required
-            value="<%= user.username %>"
           />
         </div>
         <div class="field">
@@ -89,7 +91,6 @@
             id="email"
             placeholder="Enter your email"
             required
-            value="<%= user.email %>"
           />
         </div>
         <button type="submit">Update Profile</button>
@@ -98,7 +99,56 @@
         </div>
         <div class="error" id="errorMessage" style="display: none"></div>
       </form>
+
+      <div class="divider"></div>
+
+      <h2>Upload Profile Image</h2>
+      <form id="imageUploadForm" enctype="multipart/form-data">
+        <div class="field">
+          <label for="profileImage">Select an image</label>
+          <input type="file" id="profileImage" accept="image/*" required />
+        </div>
+        <button type="submit">Upload Image</button>
+        <div class="success" id="imageSuccessMessage" style="display: none">
+          Image uploaded successfully!
+        </div>
+        <div class="error" id="imageErrorMessage" style="display: none"></div>
+      </form>
+
+      <div class="divider"></div>
+
+      <h2>Reset Password</h2>
+      <form id="passwordResetForm">
+        <div class="field">
+          <label for="currentPassword">Current Password</label>
+          <input
+            type="password"
+            id="currentPassword"
+            placeholder="Enter current password"
+            required
+          />
+        </div>
+        <div class="field">
+          <label for="newPassword">New Password</label>
+          <input
+            type="password"
+            id="newPassword"
+            placeholder="Enter new password"
+            required
+          />
+        </div>
+        <button type="submit">Reset Password</button>
+        <div class="success" id="passwordSuccessMessage" style="display: none">
+          Password reset successfully!
+        </div>
+        <div
+          class="error"
+          id="passwordErrorMessage"
+          style="display: none"
+        ></div>
+      </form>
     </div>
+
     <script>
       document
         .getElementById("profileForm")
@@ -123,6 +173,78 @@
               const error = await response.json();
               errorMessage.textContent =
                 error.message || "Failed to update profile";
+              errorMessage.style.display = "block";
+              successMessage.style.display = "none";
+            }
+          } catch (error) {
+            errorMessage.textContent =
+              "An error occurred. Please try again later.";
+            errorMessage.style.display = "block";
+            successMessage.style.display = "none";
+          }
+        });
+
+      document
+        .getElementById("imageUploadForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+          const profileImage = document.getElementById("profileImage").files[0];
+          const successMessage = document.getElementById("imageSuccessMessage");
+          const errorMessage = document.getElementById("imageErrorMessage");
+
+          const formData = new FormData();
+          formData.append("image", profileImage);
+
+          try {
+            const response = await fetch("/profile/image", {
+              method: "POST",
+              body: formData,
+            });
+
+            if (response.ok) {
+              successMessage.style.display = "block";
+              errorMessage.style.display = "none";
+            } else {
+              const error = await response.json();
+              errorMessage.textContent =
+                error.message || "Failed to upload image";
+              errorMessage.style.display = "block";
+              successMessage.style.display = "none";
+            }
+          } catch (error) {
+            errorMessage.textContent =
+              "An error occurred. Please try again later.";
+            errorMessage.style.display = "block";
+            successMessage.style.display = "none";
+          }
+        });
+
+      document
+        .getElementById("passwordResetForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+          const currentPassword =
+            document.getElementById("currentPassword").value;
+          const newPassword = document.getElementById("newPassword").value;
+          const successMessage = document.getElementById(
+            "passwordSuccessMessage"
+          );
+          const errorMessage = document.getElementById("passwordErrorMessage");
+
+          try {
+            const response = await fetch("/profile/reset-password", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ currentPassword, newPassword }),
+            });
+
+            if (response.ok) {
+              successMessage.style.display = "block";
+              errorMessage.style.display = "none";
+            } else {
+              const error = await response.json();
+              errorMessage.textContent =
+                error.message || "Failed to reset password";
               errorMessage.style.display = "block";
               successMessage.style.display = "none";
             }

@@ -2,6 +2,7 @@ import { CATALOG } from "../const/catalog";
 import { IUser } from "../interfaces/IUser";
 import { UserRepository } from "../repositories/UserRepository";
 import { serviceResponse } from "../utils/serviceResponse";
+import bcrypt from "bcryptjs";
 
 export class UserController {
   readonly userRepository = UserRepository.getInstance();
@@ -69,7 +70,7 @@ export class UserController {
       const user: IUser = {
         id: crypto.randomUUID(),
         email: req.body.email,
-        password: req.body.password,
+        password: bcrypt.hashSync(req.body.password, 10),
         username: req.body.username,
         phone: req.body.phone,
         "2faEnable": false,

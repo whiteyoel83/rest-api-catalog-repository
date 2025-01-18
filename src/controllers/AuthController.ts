@@ -179,14 +179,6 @@ export class AuthController {
 
       const isUserRefreshTokenCreated =
         await this.userRepository.createRefreshToken(user.id, refreshToken);
-
-      // return res.status(200).json({
-      //   id: user.id,
-      //   name: user.name,
-      //   email: user.email,
-      //   accessToken,
-      //   refreshToken,
-      // });
       return serviceResponse.ok(
         res,
         "Login successful",
@@ -195,8 +187,6 @@ export class AuthController {
           username: user.username,
           email: user.email,
           phone: user.phone,
-          //accessToken,
-          //refreshToken,
         },
         {
           accessToken,
@@ -267,10 +257,6 @@ export class AuthController {
           .json({ message: "Error creating refresh token" });
       }
 
-      // return res.status(200).json({
-      //   accessToken,
-      //   refreshToken: newRefreshToken,
-      // });
       return serviceResponse.ok(res, "refreshToken successful", null, {
         accessToken,
         refreshToken: newRefreshToken,
@@ -381,7 +367,6 @@ export class AuthController {
   logoutDevice = async (req: any, res: any): Promise<any> => {
     try {
       const { refreshToken } = req.cookies.refreshToken;
-      console.log(refreshToken);
       await this.userRepository.deleteRefreshTokenByToken(refreshToken);
 
       await this.userRepository.createInvalidTokens(

@@ -1,11 +1,11 @@
-const list: any[] = require("./users.json");
+const users: any[] = require("./users.json");
 const userRefreshTokens: any[] = [];
 const userInvalidTokens: any[] = [];
 
 export class UserDalMock {
   static getAll() {
     try {
-      return list;
+      return users;
     } catch (error) {
       console.error(error);
       return error;
@@ -16,7 +16,7 @@ export class UserDalMock {
     try {
       const startIndex = (page - 1) * limit;
       const endIndex = startIndex + limit;
-      return list.slice(startIndex, endIndex);
+      return users.slice(startIndex, endIndex);
     } catch (error) {
       console.error(error);
       return error;
@@ -25,7 +25,7 @@ export class UserDalMock {
 
   static getAllWithFilters(filters: any) {
     try {
-      return list;
+      return users;
     } catch (error) {
       console.error(error);
       return error;
@@ -33,14 +33,14 @@ export class UserDalMock {
   }
   static getById(id: string) {
     try {
-      const index = list.findIndex((element: any) => element.id === id);
+      const index = users.findIndex((element: any) => element.id === id);
 
       if (index === -1) {
         console.error("invalid index:" + index);
         return null;
       }
 
-      return list[index];
+      return users[index];
     } catch (error) {
       console.error(error);
       return error;
@@ -93,7 +93,7 @@ export class UserDalMock {
         ...element,
       };
 
-      list.push(newElement);
+      users.push(newElement);
       return newElement;
     } catch (error) {
       console.error(error);
@@ -136,7 +136,7 @@ export class UserDalMock {
 
   static async update(id: string, element: any) {
     try {
-      const index = list.findIndex((user: any) => user.id === id);
+      const index = users.findIndex((user: any) => user.id === id);
 
       if (index === -1) {
         console.error("invalid index" + index);
@@ -144,13 +144,13 @@ export class UserDalMock {
       }
 
       const updatedUser = {
-        ...list[index],
+        ...users[index],
         ...element,
       };
 
-      list[index] = updatedUser;
+      users[index] = updatedUser;
 
-      return list[index];
+      return users[index];
     } catch (error) {
       console.error(error);
       return error;
@@ -159,15 +159,15 @@ export class UserDalMock {
 
   static async update2factorAuthentication(id: string, secret: string) {
     try {
-      const index = list.findIndex((user: any) => user.id === id);
+      const index = users.findIndex((user: any) => user.id === id);
       if (index === -1) {
         console.error("invalid index" + index);
         return false;
       }
 
-      list[index]["2faSecret"] = secret;
+      users[index]["2faSecret"] = secret;
 
-      return list[index];
+      return users[index];
     } catch (error) {
       console.error(error);
       return error;
@@ -176,15 +176,15 @@ export class UserDalMock {
 
   static async update2factorAuthenticationEnable(id: string) {
     try {
-      const index = list.findIndex((user: any) => user.id === id);
+      const index = users.findIndex((user: any) => user.id === id);
       if (index === -1) {
         console.error("invalid index" + index);
         return false;
       }
 
-      list[index]["2faEnable"] = true;
+      users[index]["2faEnable"] = true;
 
-      return list[index];
+      return users[index];
     } catch (error) {
       console.error(error);
       return error;
@@ -193,12 +193,12 @@ export class UserDalMock {
 
   static async delete(id: string) {
     try {
-      const index = list.findIndex((user: any) => user.id === id);
+      const index = users.findIndex((user: any) => user.id === id);
       if (index === -1) {
         console.error("invalid index" + index);
         return false;
       }
-      list.splice(index, 1);
+      users.splice(index, 1);
       return true;
     } catch (error) {
       console.error(error);
@@ -246,14 +246,14 @@ export class UserDalMock {
 
   static async getByEmail(email: string) {
     try {
-      const index = list.findIndex((element: any) => element.email === email);
+      const index = users.findIndex((element: any) => element.email === email);
 
       if (index === -1) {
         console.error("invalid index" + index);
         return null;
       }
 
-      return list[index];
+      return users[index];
     } catch (error) {
       console.error(error);
       return error;
@@ -262,14 +262,14 @@ export class UserDalMock {
 
   static async getByUsername(username: string) {
     try {
-      const index = list.findIndex((user: any) => user.username === username);
+      const index = users.findIndex((user: any) => user.username === username);
 
       if (index === -1) {
         console.error("invalid index" + index);
         return null;
       }
 
-      return list[index];
+      return users[index];
     } catch (error) {
       console.error(error);
       return error;
@@ -278,14 +278,14 @@ export class UserDalMock {
 
   static async getByPhone(phone: string) {
     try {
-      const index = list.findIndex((element: any) => element.phone === phone);
+      const index = users.findIndex((element: any) => element.phone === phone);
 
       if (index === -1) {
         console.error("invalid index" + index);
         return null;
       }
 
-      return list[index];
+      return users[index];
     } catch (error) {
       console.error(error);
       return error;
@@ -294,14 +294,14 @@ export class UserDalMock {
 
   static async loginUsername({ username, password }: any) {
     try {
-      const index = list.findIndex((user: any) => user.username === username);
+      const index = users.findIndex((user: any) => user.username === username);
 
       if (index === -1) {
         console.error("invalid index" + index);
         return null;
       }
 
-      const user = list[index];
+      const user = users[index];
 
       if (user.password !== password) {
         console.error("invalid password");
@@ -317,14 +317,14 @@ export class UserDalMock {
 
   static async loginEmail({ email, password }: any) {
     try {
-      const userIndex = list.findIndex((user: any) => user.email === email);
+      const userIndex = users.findIndex((user: any) => user.email === email);
 
       if (userIndex === -1) {
         console.error("invalid index" + userIndex);
         return null;
       }
 
-      const user = list[userIndex];
+      const user = users[userIndex];
 
       if (user.password !== password) {
         console.error("invalid password");
@@ -340,14 +340,14 @@ export class UserDalMock {
 
   static async loginPhone({ phone, password }: any) {
     try {
-      const index = list.findIndex((user: any) => user.phone === phone);
+      const index = users.findIndex((user: any) => user.phone === phone);
 
       if (index === -1) {
         console.error("invalid index" + index);
         return null;
       }
 
-      const user = list[index];
+      const user = users[index];
 
       if (user.password !== password) {
         console.error("invalid password");
@@ -363,14 +363,14 @@ export class UserDalMock {
 
   static async logout({ token }: any) {
     try {
-      const index = list.findIndex((user: any) => user.token === token);
+      const index = users.findIndex((user: any) => user.token === token);
 
       if (index === -1) {
         console.error("invalid index" + index);
         return false;
       }
 
-      list.splice(index, 1);
+      users.splice(index, 1);
       return true;
     } catch (error) {
       console.error(error);

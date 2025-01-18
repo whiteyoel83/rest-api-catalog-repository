@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard</title>
+    <title>Dashboard - Manage Users</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -54,18 +54,75 @@
         margin: 0;
         color: #555;
       }
+      .actions {
+        margin-top: 15px;
+      }
+      .actions button {
+        padding: 5px 10px;
+        margin-right: 5px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        color: #fff;
+      }
+      .edit-btn {
+        background-color: #ffc107;
+      }
+      .delete-btn {
+        background-color: #dc3545;
+      }
+      .add-user {
+        margin-bottom: 15px;
+      }
+      .add-user input {
+        padding: 10px;
+        margin-right: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+      .add-user button {
+        padding: 10px;
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
     <div class="navbar">
-      <h1>Dashboard</h1>
+      <h1>Dashboard - Manage Users</h1>
       <button id="logoutButton">Logout</button>
     </div>
-    <div class="dashboard-container" id="dashboard">
-      <!-- Dynamic content will be loaded here -->
+    <div class="dashboard-container">
+      <div class="add-user">
+        <input
+          type="text"
+          id="newUsername"
+          placeholder="Enter the username"
+          required
+        />
+        <input
+          type="email"
+          id="newEmail"
+          placeholder="Enter the email"
+          required
+        />
+        <input
+          type="password"
+          id="newPassword"
+          placeholder="Enter the password"
+          required
+        />
+        <button id="addUserButton">Add User</button>
+      </div>
+      <div id="usersContainer"></div>
     </div>
     <script>
-      async function loadDashboard() {
+      const usersContainer = document.getElementById("usersContainer");
+
+      async function loadUsers() {
         try {
           const response = await fetch("/api/v1/users", {
             method: "GET",
@@ -73,23 +130,121 @@
           });
 
           if (response.ok) {
-            const data = await response.json();
-            const dashboardContainer = document.getElementById("dashboard");
-            dashboardContainer.innerHTML = "";
+            const users = await response.json();
+            usersContainer.innerHTML = "";
 
-            data.data.forEach((item) => {
-              const card = document.createElement("div");
-              card.className = "card";
-              card.innerHTML = `<h2>${item.username}</h2><p>${item.email}</p>`;
-              dashboardContainer.appendChild(card);
+            users.data.forEach((user) => {
+              const userCard = document.createElement("div");
+              userCard.className = "card";
+              userCard.innerHTML = `
+              <h2>${user.username}</h2>
+              <p>Email: ${user.email}</p>
+              <div class="actions">
+                <button class="edit-btn" onclick="editUser('${user.id}')">Edit</button>
+                <button class="delete-btn" onclick="deleteUser('${user.id}')">Delete</button>
+              </div>
+            `;
+              usersContainer.appendChild(userCard);
             });
           } else {
-            console.error("Failed to load dashboard");
+            console.error("Failed to load users");
           }
         } catch (error) {
           console.error("An error occurred:", error);
         }
       }
+
+      async function addUser() {
+        const username = document.getElementById("newUsername").value;
+        const email = document.getElementById("newEmail").value;
+        const password = document.getElementById("newPassword").value;
+
+        if (!username || !email || !password) {
+          alert("Please fill in all fields");
+          return;
+        }
+
+        try {
+          const response = await fetch("/api/v1/users", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, email, password }),
+          });
+
+          if (response.ok) {
+            alert("User added successfully");
+            loadUsers();
+            notifyRabbitMQ(`User ${username} added.`);
+          } else {
+            console.error("Failed to add user");
+          }
+        } catch (error) {
+          console.error("An error occurred:", error);
+        }
+      }
+
+      async function deleteUser(userId) {
+        try {
+          const response = await fetch(`/api/v1/users/${userId}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+          });
+
+          if (response.ok) {
+            alert("User deleted successfully");
+            loadUsers();
+            notifyRabbitMQ(`User with ID ${userId} deleted.`);
+          } else {
+            console.error("Failed to delete user");
+          }
+        } catch (error) {
+          console.error("An error occurred:", error);
+        }
+      }
+
+      async function editUser(userId) {
+        const newUsername = prompt("Enter new username:");
+        const newEmail = prompt("Enter new email:");
+
+        if (!newUsername || !newEmail) {
+          alert("Please provide both a new username and email");
+          return;
+        }
+
+        try {
+          const response = await fetch(`/api/v1/users/${userId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username: newUsername, email: newEmail }),
+          });
+
+          if (response.ok) {
+            alert("User updated successfully");
+            loadUsers();
+            notifyRabbitMQ(`User with ID ${userId} updated.`);
+          } else {
+            console.error("Failed to update user");
+          }
+        } catch (error) {
+          console.error("An error occurred:", error);
+        }
+      }
+
+      async function notifyRabbitMQ(message) {
+        try {
+          await fetch("/rabbitmq/notify", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message }),
+          });
+        } catch (error) {
+          console.error("Error sending notification to RabbitMQ:", error);
+        }
+      }
+
+      document
+        .getElementById("addUserButton")
+        .addEventListener("click", addUser);
 
       document
         .getElementById("logoutButton")
@@ -108,7 +263,7 @@
           }
         });
 
-      loadDashboard();
+      loadUsers();
     </script>
   </body>
 </html>
